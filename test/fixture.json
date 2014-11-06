@@ -1,0 +1,35 @@
+{
+    "base": {
+        "name": "boardwalk"
+    },
+    "definitions": {
+        "mutable": {
+            "prop": "zip",
+            "value": "zipzipzip"
+        },
+        "private": {
+            "prop": "biggle",
+            "value": 8393920
+        },
+        "public": {
+            "prop": "mookie",
+            "value": "zipple zopple bopple bipple"
+        },
+        "writable": {
+            "prop": "whatever",
+            "value": "whenever"
+        },
+        "constant": {
+            "prop": "LICENSE",
+            "value": "KFBR392"
+        },
+        "protected": {
+            "prop": "vehicle",
+            "value": "horse"
+        },
+        "hidden": {
+            "prop": "magic",
+            "value": "waffles"
+        }
+    }
+}
