@@ -70,11 +70,20 @@ pp.private = (prop, value)->
     pp.define prop, value, settings
 
 # e: 1, w: 0, c: 0
-pp.public = (prop, value)->
+pp.readable = (prop, value)->
     settings = {
         enumerable: true
         writable: false
         configurable: false
+    }
+    pp.define prop, value, settings
+
+# e: 1, w: 0, c: 1
+pp.public = (prop, value)->
+    settings = {
+        enumerable: true
+        writable: false
+        configurable: true
     }
     pp.define prop, value, settings
 

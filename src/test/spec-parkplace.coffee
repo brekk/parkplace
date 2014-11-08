@@ -10,6 +10,7 @@ pp = require '../lib/parkplace'
         boardwalk = fixture.base
         mutableDef = fixture.definitions.mutable
         privateDef = fixture.definitions.private
+        readableDef = fixture.definitions.readable
         publicDef = fixture.definitions.public
         writableDef = fixture.definitions.writable
         constantDef = fixture.definitions.constant
@@ -104,7 +105,7 @@ pp = require '../lib/parkplace'
                 it 'should create a definer with a given scope', ()->
                     zoningCommittee = pp.scope boardwalk
                     zoningCommittee.should.be.ok
-                    zoningCommittee.should.have.properties 'define', 'mutable', 'private', 'writable', 'public', 'constant', 'protected'
+                    zoningCommittee.should.have.properties 'define', 'mutable', 'private', 'writable', 'public', 'constant', 'protected', 'writable'
                     zoningCommittee.should.not.have.properties 'hidden', 'lookupHidden', 'scope'
                 
                 it 'should add a .get and a .has method to the scoped definer', ()->
@@ -139,12 +140,18 @@ pp = require '../lib/parkplace'
                 itShouldRemainUnconfigurable privateDef.value
                 itShouldBeWritable privateDef.prop
 
-
-            describe '.public ', ()->
+            describe '.readable', ()->
                 # e: 1, w: 0, c: 0
                 itShouldMaintainScope()
+                itShouldBeEnumerable 'readable', readableDef
+                itShouldRemainUnconfigurable readableDef.value
+                itShouldNotBeWritable readableDef.prop
+
+            describe '.public ', ()->
+                # e: 1, w: 0, c: 1
+                itShouldMaintainScope()
                 itShouldBeEnumerable 'public', publicDef
-                itShouldRemainUnconfigurable publicDef.value
+                itShouldRemainConfigurable publicDef.value
                 itShouldNotBeWritable publicDef.prop
 
             describe '.writable', ()->
