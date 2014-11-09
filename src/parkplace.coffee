@@ -113,6 +113,7 @@ pp.protected = (prop, value)->
         configurable: true
     }
 
+(->
 # this is for things that are scoped out of any context
 # enumerable or otherwise (and are therefore truly private)
 hiddenContext = {}
@@ -127,6 +128,7 @@ pp.lookupHidden = (key)->
     if hiddenContext[key]?
         return hiddenContext[key]
     return null
+)()
 
 module.exports = pp
 return pp
