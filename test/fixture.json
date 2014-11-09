@@ -7,7 +7,7 @@
             "prop": "zip",
             "value": "zipzipzip"
         },
-        "private": {
+        "secret": {
             "prop": "biggle",
             "value": 8393920
         },
@@ -15,7 +15,7 @@
             "prop": "mattbesser",
             "value": "improv4humans"
         },
-        "public": {
+        "open": {
             "prop": "mookie",
             "value": "zipple zopple bopple bipple"
         },
@@ -27,7 +27,7 @@
             "prop": "LICENSE",
             "value": "KFBR392"
         },
-        "protected": {
+        "guarded": {
             "prop": "vehicle",
             "value": "horse"
         },

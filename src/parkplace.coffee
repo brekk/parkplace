@@ -61,11 +61,29 @@ pp.mutable = (prop, value)->
     pp.define prop, value
 
 # e: 0, w: 1, c: 0
-pp.private = (prop, value)->
+pp.secret = (prop, value)->
     settings = {
         enumerable: false
         writable: true
         configurable: false
+    }
+    pp.define prop, value, settings
+
+# e: 1, w: 0, c: 1
+pp.open = (prop, value)->
+    settings = {
+        enumerable: true
+        writable: false
+        configurable: true
+    }
+    pp.define prop, value, settings
+
+# e: 0, w: 0, c: 1
+pp.guarded = (prop, value)->
+    settings = {
+        enumerable: false
+        writable: false
+        configurable: true
     }
     pp.define prop, value, settings
 
@@ -75,15 +93,6 @@ pp.readable = (prop, value)->
         enumerable: true
         writable: false
         configurable: false
-    }
-    pp.define prop, value, settings
-
-# e: 1, w: 0, c: 1
-pp.public = (prop, value)->
-    settings = {
-        enumerable: true
-        writable: false
-        configurable: true
     }
     pp.define prop, value, settings
 
@@ -104,14 +113,6 @@ pp.constant = (prop, value)->
         configurable: false
     }
     pp.define prop, value, settings
-
-# e: 0, w: 0, c: 1
-pp.protected = (prop, value)->
-    settings = {
-        enumerable: false
-        writable: false
-        configurable: true
-    }
 
 (->
 # this is for things that are scoped out of any context
