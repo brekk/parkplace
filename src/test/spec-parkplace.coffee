@@ -9,12 +9,12 @@ pp = require '../lib/parkplace'
         fixture = require './fixture.json'
         boardwalk = fixture.base
         mutableDef = fixture.definitions.mutable
-        privateDef = fixture.definitions.private
+        secretDef = fixture.definitions.secret
         readableDef = fixture.definitions.readable
-        publicDef = fixture.definitions.public
+        openDef = fixture.definitions.open
         writableDef = fixture.definitions.writable
         constantDef = fixture.definitions.constant
-        protectedDef = fixture.definitions.protected
+        guardedDef = fixture.definitions.guarded
         hiddenDef = fixture.definitions.hidden
         zoningCommittee = null
 
@@ -105,7 +105,7 @@ pp = require '../lib/parkplace'
                 it 'should create a definer with a given scope', ()->
                     zoningCommittee = pp.scope boardwalk
                     zoningCommittee.should.be.ok
-                    zoningCommittee.should.have.properties 'define', 'mutable', 'private', 'writable', 'public', 'constant', 'protected', 'writable'
+                    zoningCommittee.should.have.properties 'define', 'mutable', 'secret', 'writable', 'open', 'constant', 'guarded', 'writable'
                     zoningCommittee.should.not.have.properties 'hidden', 'lookupHidden', 'scope'
                 
                 it 'should add a .get and a .has method to the scoped definer', ()->
@@ -133,12 +133,12 @@ pp = require '../lib/parkplace'
                     boardwalk[mutableDef.prop] = hip3
                     boardwalk[mutableDef.prop].should.eql hip3
                 
-            describe '.private', ()->
+            describe '.secret', ()->
                 # e: 0, w: 1, c: 0
                 itShouldMaintainScope()
-                itShouldNotBeEnumerable 'private', privateDef
-                itShouldRemainUnconfigurable privateDef.value
-                itShouldBeWritable privateDef.prop
+                itShouldNotBeEnumerable 'secret', secretDef
+                itShouldRemainUnconfigurable secretDef.value
+                itShouldBeWritable secretDef.prop
 
             describe '.readable', ()->
                 # e: 1, w: 0, c: 0
@@ -147,12 +147,12 @@ pp = require '../lib/parkplace'
                 itShouldRemainUnconfigurable readableDef.value
                 itShouldNotBeWritable readableDef.prop
 
-            describe '.public ', ()->
+            describe '.open ', ()->
                 # e: 1, w: 0, c: 1
                 itShouldMaintainScope()
-                itShouldBeEnumerable 'public', publicDef
-                itShouldRemainConfigurable publicDef.value
-                itShouldNotBeWritable publicDef.prop
+                itShouldBeEnumerable 'open', openDef
+                itShouldRemainConfigurable openDef.value
+                itShouldNotBeWritable openDef.prop
 
             describe '.writable', ()->
                 # e: 1, w: 1, c: 0
@@ -168,12 +168,12 @@ pp = require '../lib/parkplace'
                 itShouldRemainUnconfigurable writableDef.prop
                 itShouldNotBeWritable writableDef.prop
 
-            describe '.protected', ()->
+            describe '.guarded', ()->
                 # e: 0, w: 0, c: 1
                 itShouldMaintainScope()
-                itShouldNotBeEnumerable 'protected', protectedDef
-                itShouldNotBeWritable protectedDef.prop
-                itShouldRemainConfigurable protectedDef.prop
+                itShouldNotBeEnumerable 'guarded', guardedDef
+                itShouldNotBeWritable guardedDef.prop
+                itShouldRemainConfigurable guardedDef.prop
 
             describe '.hidden', ()->
                 it 'should add hidden properties', ()->
