@@ -49,12 +49,12 @@ by calling scope, we get a copy of the base parkplace with some additional conve
 In addition to the base define function, there are nearly the permutations for the the second-to-last parameter of `define` above:
 
 *  `mutable` - enumerable, writable, configurable (essentially an alias of `define`)
-*  `private` - non-enumerable, writable, non-configurable
+*  `secret` - non-enumerable, writable, non-configurable
+*  `open` - enumerable, non-writable, configurable
+*  `guarded` - enumerable, writable, configurable
 *  `readable` - enumerable, non-writable, non-configurable
-*  `public` - enumerable, non-writable, configurable
 *  `writable` - enumerable, writable, non-configurable
 *  `constant` - non-enumerable, non-writable, non-configurable
-*  `protected` - enumerable, writable, configurable
 
 (I didn't see much purpose in a non-enumerable, writable, configurable property, as it feels like a secret API, but perhaps one can be added in the future. And if you want a truly private context, use `hidden` below.)
 
@@ -63,20 +63,28 @@ So, all together now:
     # coffeescript
     "use strict"
     someObject = {}
-    # now we make a definer
-    ___ = require('parkplace').scope someObject
-
-    ___.constant 'PI', Math.PI
+    # let's make a definer:
+    scoped = require('./lib/parkplace').scope someObject
+    scoped.constant 'PI', Math.PI
     console.log someObject.PI is Math.PI       # prints true
-
-    ___.public 'name', 'publizity'
-    console.log Object.keys someObject         # prints ['name']
-
-    ___.private 'license', "KFBR392"
+    scoped.secret 'license', "KFBR392"
     console.log Object.keys someObject         # prints []
-
+    scoped.open 'name', 'publizity'
+    console.log Object.keys someObject         # prints ['name']
     # maybe in some other file, down the line
-    ___.mutable 'license', "somenewvalue"      # throws TypeError: Cannot redefine property: license
+    scoped.mutable 'license', "somenewvalue"   # throws TypeError: Cannot redefine property: license
+
+    # javascript
+    var someObject = {};
+    var scoped = require('./lib/parkplace').scope(someObject);
+    scoped.constant('PI', Math.PI);
+    console.log(someObject.PI === Math.PI);    // prints true
+    scoped.secret('license', "KFBR392");
+    console.log(Object.keys(someObject));      // prints []
+    scoped.open('name', 'publizity');          
+    console.log(Object.keys(someObject));      // prints ['name']
+    scoped.mutable('license', "somenewvalue"); // throws TypeError: Cannot redefine property: license
+
 
 The scoped definer also has the convenience methods `has` which returns a boolean (true if property is defined) and `get`, which returns the matched value or `null`:
 
