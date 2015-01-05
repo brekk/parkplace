@@ -1,6 +1,6 @@
 {
   "name": "parkplace",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A clean wrapper around the Object.defineProperty method with some convenient magic. It's called parkplace 'cause that's a good definition of a property.",
   "main": "index.js",
   "directories": {
@@ -10,7 +10,7 @@
     "build": "./node_modules/.bin/coffee --compile --output lib/ src/",
     "build-test": "./node_modules/.bin/coffee --compile --output test/ src/test/",
     "test": "npm run build-test && mocha --reporter spec",
-    "preinstall": "npm run build",
+    "prepublish": "npm run build",
     "clean": "(rm src/*.js || true) && (rm src/test/*.js || true) && (rm -Rf lib || true)"
   },
   "keywords": [
@@ -22,10 +22,10 @@
   "author": "Brekk Bockrath",
   "license": "ISC",
   "dependencies": {
+    "coffee-script": "^1.8.0",
     "lodash": "^2.4.1"
   },
   "devDependencies": {
-    "coffee-script": "^1.8.0",
     "should": "^4.2.0"
   },
   "repository": {

@@ -51,7 +51,7 @@ In addition to the base define function, there are nearly the permutations for t
 *  `mutable` - enumerable, writable, configurable (essentially an alias of `define`)
 *  `secret` - non-enumerable, writable, non-configurable
 *  `open` - enumerable, non-writable, configurable
-*  `guarded` - enumerable, writable, configurable
+*  `guarded` - non-enumerable, non-writable, configurable
 *  `readable` - enumerable, non-writable, non-configurable
 *  `writable` - enumerable, writable, non-configurable
 *  `constant` - non-enumerable, non-writable, non-configurable
@@ -64,26 +64,27 @@ So, all together now:
     "use strict"
     someObject = {}
     # let's make a definer:
-    scoped = require('./lib/parkplace').scope someObject
-    scoped.constant 'PI', Math.PI
+    ____ = require('./lib/parkplace').scope someObject
+    ____.constant 'PI', Math.PI
     console.log someObject.PI is Math.PI       # prints true
-    scoped.secret 'license', "KFBR392"
+    ____.secret 'license', "KFBR392"
     console.log Object.keys someObject         # prints []
-    scoped.open 'name', 'publizity'
+    ____.open 'name', 'publizity'
     console.log Object.keys someObject         # prints ['name']
     # maybe in some other file, down the line
-    scoped.mutable 'license', "somenewvalue"   # throws TypeError: Cannot redefine property: license
+    ____.mutable 'license', "somenewvalue"   # throws TypeError: Cannot redefine property: license
 
     # javascript
+    "use strict";
     var someObject = {};
-    var scoped = require('./lib/parkplace').scope(someObject);
-    scoped.constant('PI', Math.PI);
+    var ____ = require('./lib/parkplace').scope(someObject);
+    ____.constant('PI', Math.PI);
     console.log(someObject.PI === Math.PI);    // prints true
-    scoped.secret('license', "KFBR392");
+    ____.secret('license', "KFBR392");
     console.log(Object.keys(someObject));      // prints []
-    scoped.open('name', 'publizity');          
+    ____.open('name', 'publizity');          
     console.log(Object.keys(someObject));      // prints ['name']
-    scoped.mutable('license', "somenewvalue"); // throws TypeError: Cannot redefine property: license
+    ____.mutable('license', "somenewvalue"); // throws TypeError: Cannot redefine property: license
 
 
 The scoped definer also has the convenience methods `has` which returns a boolean (true if property is defined) and `get`, which returns the matched value or `null`:
