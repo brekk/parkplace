@@ -7,11 +7,15 @@
     "test": "test"
   },
   "scripts": {
-    "coffee-compile": "./node_modules/.bin/coffee --compile --output lib/ src/ && (rm -rf ./test || true) && mv -f lib/test .",
-    "build": "npm run coffee-compile",
-    "test": "npm run build && cp ./src/test/fixture.json ./test/. && mocha --reporter spec",
+    "coffee-compile": "node_modules/.bin/coffee --compile --output ./lib/ ./src/",
+    "flush-tests": "(rm -rf ./test || true)",
+    "move-tests": "mv -f lib/test .",
+    "build": "npm run coffee-compile && npm run flush-tests && npm run move-tests",
+    "copy-test-fixtures": "cp ./src/test/fixture.json ./test/.",
+    "test": "npm run build && npm run copy-test-fixtures && npm run mocha-test",
+    "mocha-test": "mocha --reporter spec",
     "prepublish": "npm run build",
-    "clean": "(rm src/*.js || true) && (rm src/test/*.js || true) && (rm -Rf lib || true)"
+    "clean": "(rm src/*.js || true) && (rm src/test/*.js || true) && (rm -rf lib || true)"
   },
   "keywords": [
     "object",
