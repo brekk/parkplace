@@ -4,35 +4,35 @@
     },
     "definitions": {
         "mutable": {
-            "prop": "zip",
+            "prop": "mutableProperty",
             "value": "zipzipzip"
         },
         "secret": {
-            "prop": "biggle",
+            "prop": "secretProperty",
             "value": 8393920
         },
         "readable": {
-            "prop": "mattbesser",
+            "prop": "readableProperty",
             "value": "improv4humans"
         },
         "open": {
-            "prop": "mookie",
+            "prop": "openProperty",
             "value": "zipple zopple bopple bipple"
         },
         "writable": {
-            "prop": "whatever",
+            "prop": "writabelProperty",
             "value": "whenever"
         },
         "constant": {
-            "prop": "LICENSE",
+            "prop": "constantProperty",
             "value": "KFBR392"
         },
         "guarded": {
-            "prop": "vehicle",
+            "prop": "guardedProperty",
             "value": "horse"
         },
         "hidden": {
-            "prop": "magic",
+            "prop": "hiddenProperty",
             "value": "waffles"
         }
     }

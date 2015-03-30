@@ -19,7 +19,7 @@ pp.define = (prop, value, settings, onObject)->
     # for convenience, the onObject passes through the scope function's wrapper
     # so that you don't have to establish a separate variable for it
     unless _.isObject onObject
-        scope = pp.lookupHidden 'scope'
+        scope = @lookupHidden 'scope'
         if scope?
             onObject = scope
     unless _.isObject onObject
@@ -30,11 +30,11 @@ pp.define = (prop, value, settings, onObject)->
         onObject[prop] = value
 
 pp.scope = (ref)->
-    scopedDefinition = _.assign {}, pp
+    scopedDefinition = _.clone pp, true
     # make it un-rescopable, 'cause that's confusing
     delete scopedDefinition.scope
-    delete scopedDefinition.hidden
-    delete scopedDefinition.lookupHidden
+    # delete scopedDefinition.hidden
+    # delete scopedDefinition.lookupHidden
     scopedDefinition.has = (property, andHidden=false)->
         hasOwn = ref[property]?
         unless andHidden
@@ -49,7 +49,7 @@ pp.scope = (ref)->
                 if @has property, andHidden
                     return pp.lookupHidden property
         return null
-    pp.hidden 'scope', ref
+    scopedDefinition.hidden 'scope', ref
     return scopedDefinition
 
 # Now, the definitions:
@@ -120,7 +120,7 @@ pp.constant = (prop, value)->
 hiddenContext = {}
 pp.hidden = (prop, value, force=false)->
     if !hiddenContext[prop]? or force
-        pp.define prop, value, {}, hiddenContext
+        @define prop, value, {}, hiddenContext
         return true
     return false
 
@@ -128,7 +128,7 @@ pp.hidden = (prop, value, force=false)->
 pp.lookupHidden = (key)->
     if hiddenContext[key]?
         return hiddenContext[key]
-    return null
+    return
 )()
 
 module.exports = pp

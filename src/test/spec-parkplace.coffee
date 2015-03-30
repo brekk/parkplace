@@ -107,6 +107,37 @@ pp = require '../lib/parkplace'
                     zoningCommittee.should.be.ok
                     zoningCommittee.should.have.properties 'define', 'mutable', 'secret', 'writable', 'open', 'constant', 'guarded', 'writable'
                     zoningCommittee.should.not.have.properties 'hidden', 'lookupHidden', 'scope'
+
+                it 'should not leak definitions across scopes', ()->
+                    zoningCommittee = pp.scope boardwalk
+                    zoningCommittee.mutable mutableDef.prop, mutableDef.value
+                    zoningCommittee.readable readableDef.prop, readableDef.value
+                    zoningCommittee.open openDef.prop, openDef.value
+                    zoningCommittee.writable writableDef.prop, writableDef.value
+                    zoningCommittee.constant constantDef.prop, constantDef.value
+                    zoningCommittee.guarded guardedDef.prop, guardedDef.value
+                    (->
+                        someOtherZone = pp.scope {
+                            name: "marvin gardens"
+                        }
+                        someOtherZone.mutable mutableDef.prop, mutableDef.value
+                        someOtherZone.readable readableDef.prop, readableDef.value
+                        someOtherZone.open openDef.prop, openDef.value
+                        someOtherZone.writable writableDef.prop, writableDef.value
+                        someOtherZone.constant constantDef.prop, constantDef.value
+                        someOtherZone.guarded guardedDef.prop, guardedDef.value
+                    ).should.not.throwError
+                    (->
+                        noFlexZone = pp.scope {
+                            name: "reading railroad"
+                        }
+                        noFlexZone.mutable mutableDef.prop, mutableDef.value
+                        noFlexZone.readable readableDef.prop, readableDef.value
+                        noFlexZone.open openDef.prop, openDef.value
+                        noFlexZone.writable writableDef.prop, writableDef.value
+                        noFlexZone.constant constantDef.prop, constantDef.value
+                        noFlexZone.guarded guardedDef.prop, guardedDef.value
+                    ).should.not.throwError
                 
                 it 'should add a .get and a .has method to the scoped definer', ()->
                     zoningCommittee.should.have.properties 'has', 'get'
@@ -208,9 +239,6 @@ pp = require '../lib/parkplace'
                     x = pp.lookupHidden hiddenDef.prop
                     x.should.be.ok
                     x.should.eql hiddenDef.value
-
-
-            # describe '.lookupHidden', ()->
 
     catch e
         console.log "Error during testing!", e

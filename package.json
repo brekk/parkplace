@@ -1,6 +1,6 @@
 {
   "name": "parkplace",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A clean wrapper around the Object.defineProperty method with some convenient magic. It's called parkplace 'cause that's a good definition of a property.",
   "main": "index.js",
   "directories": {
