@@ -100,6 +100,33 @@ pp = require '../lib/parkplace'
                         pzap.define 'test', Math.random() * 10
                     ).should.not.throwError
 
+            describe '.getSet', ()->
+                simple = {}
+                it 'should be a method of Parkplace', ()->
+                    pp.getSet.should.be.ok
+                    pp.getSet.should.be.a.Function
+
+                it 'should define mutable getters and setters with no other instructions', ()->
+                    rando = Math.round(Math.random() * 20000) + "KFBR392"
+                    pp.scope simple
+                    pp.getSet mutableDef.prop, {
+                        get: ()->
+                            return rando
+                    }
+                    simple.should.have.property mutableDef.prop
+                    simple.hasOwnProperty(mutableDef.prop).should.be.ok
+                    simple[mutableDef.prop].should.equal rando
+                    (->
+                        y = Math.round(Math.random() * 2000)
+                        pp.getSet mutableDef.prop, {
+                            set: (x)->
+                                y = x
+                                return y + "KFBR392"
+                            get: ()->
+                                return y + "KFBR392"
+                        }
+                    ).should.not.throwError
+
             describe '.scope', ()->
                 
                 it 'should create a definer with a given scope', ()->
